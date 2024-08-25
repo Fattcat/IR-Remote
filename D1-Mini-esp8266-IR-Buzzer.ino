@@ -4,6 +4,15 @@
 const uint16_t kRecvPin = D2;  // GPIO4 na D1 Mini
 const uint8_t buzzerPin = D1; // GPIO5 na D1 Mini
 
+// ---------------------------------
+// Connection
+// IR Receiver --> esp8266 D1 Mini
+// VCC --> 5V
+// GND --> GND
+// Pin --> D2
+// BuzzerPin --> D1
+// ---------------------------------
+
 IRrecv irrecv(kRecvPin);
 decode_results results;
 
