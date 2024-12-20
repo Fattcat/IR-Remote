@@ -1,6 +1,8 @@
 # IR-Remote
 
 ## Connection
+### Also Fully functional as Remote Control for changing colors on LED Lights module 
+
 ### IR Receiver --> D1 Mini esp8266
 - VCC --> 5V (or 3.3V If u want)
 - GND --> GND
