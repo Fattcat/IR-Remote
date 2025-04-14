@@ -32,9 +32,11 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define BUTTON_ENTER 6
 #define SD_CS_PIN 10
 
+#define USECPERTICK 50  // Definovanie hodnoty USECPERTICK, zodpovedá 38kHz modulovaniu
+
 IRrecv irrecv(IR_RECEIVE_PIN);
 decode_results results;
-IRsend irsend(IR_SEND_PIN);
+IRsend irsend;
 
 int menuIndex = 0;
 const char* menuItems[] = {"Receive", "Send", "Saved Codes"};
@@ -51,7 +53,7 @@ void setup() {
   pinMode(BUTTON_ENTER, INPUT_PULLUP);
 
   irrecv.enableIRIn();
-  irsend.begin();
+  //irsend.begin();
 
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
     Serial.println(F("OLED displej sa nepodarilo inicializovať"));
@@ -191,11 +193,13 @@ void listSavedCodes() {
   delay(3000);
 }
 
+// Funkcia pre získanie názvu súboru s nulami pred číslom
 String getNextFileName() {
   for (int i = 1; i <= 999; i++) {
-    String fname = "IR" + String(i).padStart(3, '0') + ".TXT";
-    if (!SD.exists(fname.c_str())) {
-      return fname;
+    char fname[10];
+    snprintf(fname, sizeof(fname), "IR%03d.TXT", i);  // Použitie sprintf na formátovanie čísla
+    if (!SD.exists(fname)) {
+      return String(fname);
     }
   }
   return "IR999.TXT";
@@ -204,8 +208,9 @@ String getNextFileName() {
 String getLastFileName() {
   String lastName = "IR001.TXT";
   for (int i = 1; i <= 999; i++) {
-    String fname = "IR" + String(i).padStart(3, '0') + ".TXT";
-    if (SD.exists(fname.c_str())) lastName = fname;
+    char fname[10];
+    snprintf(fname, sizeof(fname), "IR%03d.TXT", i);  // Použitie sprintf na formátovanie čísla
+    if (SD.exists(fname)) lastName = fname;
   }
   return lastName;
 }
