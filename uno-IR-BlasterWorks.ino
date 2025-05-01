@@ -1,35 +1,50 @@
 #include <IRremote.h>
 
-#define IR_LED_PIN 3  // Pin Arduino uno D3 | or Attiny85 (PB3)
-
-IRsend irsend;
+// Definuj pin pre IR vysielač
+const int irPin = 3; // IR Transmit Diode Pin D3 because it is PWM Pin !!!!
+IRsend irsend; // Objekt pre IR vysielač
 
 void setup() {
-  // Nastavenie IR LED pinu ako výstup
-  pinMode(IR_LED_PIN, OUTPUT);
-  // irsend.begin();  // commented because it works in version good IRremote 2.6.1
-  delay(1000);     // chvíľka na stabilizáciu
+  //irsend.begin(); DONT USE IT BECAUSE IRremote Version 2.6.1 does NOT WORKS WITH irsend.begin(); !
 }
 
 void loop() {
-  // -- TIETO KODY SU FUNKCNE --
-  // SAMSUNG: Power (NEC protocol)
-  irsend.sendNEC(0xE0E040BF, 32);
-  delay(500);
+  // Odoslanie IR kódov pre vypnutie rôznych zariadení
 
-  // SONY: Power (Sony protocol)
-  irsend.sendSony(0xA90, 12);  // 0xA90 = Power pre väčšinu Sony TV
-  delay(500);
+  // AB CryptoBox Power OFF
+  irsend.sendNEC(0x20DF10EF, 32); // 32-bitový kód
+  delay(500); // Čakaj 2 sekundy pred ďalším príkazom
 
-  // PANASONIC: Power (Panasonic protocol)
-  irsend.sendPanasonic(0x4004, 0x100BCBD);  // Address, Command
-  delay(500);
+  // Samsung TV Power OFF
+  irsend.sendNEC(0xE0E040BF, 32); // 32-bitový kód
+  delay(500); // Čakaj 2 sekundy pred ďalším príkazom
 
-  // LG: Power (NEC-like)
-  irsend.sendNEC(0x20DF10EF, 32);  // LG Power
-  delay(500);
+  // LG TV Power OFF
+  irsend.sendNEC(0x20DF40BF, 32); // 32-bitový kód
+  delay(500); // Čakaj 2 sekundy pred ďalším príkazom
 
-  // PHILIPS: Power (RC5 protocol)
-  irsend.sendRC5(0x100C, 13); // 0x10 (TV), 0x0C (Power)
-  delay(500);
+  // Sony TV Power OFF
+  irsend.sendSony(0xA90, 12); // 12-bitový kód pre Sony
+  delay(500); // Čakaj 2 sekundy pred ďalším príkazom
+
+  // Panasonic TV Power OFF
+  irsend.sendPanasonic(0xB0E0, 16); // 16-bitový kód pre Panasonic
+  delay(500); // Čakaj 2 sekundy pred ďalším príkazom
+
+  // Sharp TV Power OFF
+  irsend.sendSharp(0x2A5, 16); // 16-bitový kód pre Sharp
+  delay(500); // Čakaj 2 sekundy pred ďalším príkazom
+
+  // Hisense TV Power OFF
+  irsend.sendNEC(0x32F1, 32); // 32-bitový kód pre Hisense
+  delay(500); // Čakaj 2 sekundy pred ďalším príkazom
+
+  // Vizio TV Power OFF
+  irsend.sendNEC(0x20DF01FE, 32); // 32-bitový kód pre Vizio
+  delay(500); // Čakaj 2 sekundy pred ďalším príkazom
+
+  // Toshiba TV Power OFF (nie je priamo podporované v knižnici)
+  // Môžeš zvoliť alternatívny kód, napríklad pomocou NEC
+  irsend.sendNEC(0x70C0, 32); // 32-bitový kód pre Toshiba (príklad s NEC)
+  delay(500); // Čakaj 2 sekundy pred ďalším príkazom
 }
