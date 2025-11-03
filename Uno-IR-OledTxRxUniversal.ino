@@ -13,7 +13,7 @@
 // ---- 
 // SD Card Module
 // VCC 5V, GND to GND,CS 10, MISO 11, MOSI 12, SCK 13
-// Code
+// Code for SD:
 #include <IRremote.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
